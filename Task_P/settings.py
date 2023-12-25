@@ -1,6 +1,11 @@
+# Python 
+import os
 from pathlib import Path
+
+# Local 
 from . import local_settings
 
+# ----------------------------------------------------------------- #
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = local_settings.SECRET_KEY
@@ -19,7 +24,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'App1',
+    'User',
+    
 ]
 
 MIDDLEWARE = [
@@ -108,3 +114,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+AUTH_USER_MODEL = 'User.BaseUser'
