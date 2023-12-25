@@ -73,7 +73,7 @@ class UserManager(BaseUserManager):
 
 class BaseUser(AbstractBaseUser, PermissionsMixin):
     phone_number = models.BigIntegerField(
-        _('phone number'),
+        verbose_name='شماره تلفن',
         unique=True,
         validators=[ValidatorPhoneNumber],
         error_messages={
@@ -81,12 +81,12 @@ class BaseUser(AbstractBaseUser, PermissionsMixin):
         },
         null=True,
     )
-    role = models.ForeignKey(Roles,verbose_name="نقش",on_delete=models.PROTECT)
+    role = models.ForeignKey(Roles,verbose_name="نقش",on_delete=models.PROTECT,null=True)
     # optional
     name = models.CharField(
         _('name'), max_length=64, blank=True, null=True)
     email = models.EmailField(
-        _('email address'), unique=True, null=True, blank=True)
+        verbose_name='ایمیل', unique=True, null=True, blank=True)
     nick_name = models.CharField(verbose_name=_(
         'nick name'), max_length=150, blank=True, null=True)
     avatar = models.ImageField(verbose_name=_(
@@ -98,6 +98,13 @@ class BaseUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(
         verbose_name=_('date joined'), default=timezone.now)
 
+    is_staff = models.BooleanField(
+        verbose_name=_('staff status'),
+        default=False,
+        help_text=_(
+            'Designates whether the user can log into this admin site.'),
+    )
+    
     is_active = models.BooleanField(
         verbose_name=_('active'),
         default=True,
