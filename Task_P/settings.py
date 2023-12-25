@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'User',
     'nested_admin',
+    'Lessons',
     
 ]
 
