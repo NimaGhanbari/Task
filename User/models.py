@@ -28,7 +28,7 @@ class Roles(BaseModel):
     class Meta:
         db_table = "Roles"
         verbose_name = _("Role")
-        verbose_name_plural = _("Roles")
+        verbose_name_plural = "نقش ها"
         
     def __str__(self):
         return self.title
@@ -121,7 +121,7 @@ class BaseUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         db_table = 'users'
         verbose_name = _('user')
-        verbose_name_plural = _('users')
+        verbose_name_plural = 'کاربران'
 
     def clean(self):
         super().clean()
@@ -141,4 +141,6 @@ class BaseUser(AbstractBaseUser, PermissionsMixin):
         super().save(*args, **kwargs)
 
     def __str__(self):
+        if self.name:
+            return self.name +"-"+ self.role.title
         return str(self.phone_number)
