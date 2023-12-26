@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'User',
     'nested_admin',
     'Lessons',
+    'SelectUnit',
+    
     
 ]
 
