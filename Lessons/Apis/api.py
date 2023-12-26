@@ -11,62 +11,32 @@ from rest_framework import serializers
 from rest_framework import status
 
 # Local
-from Lessons.models import Lessons,Session
+from Lessons.models import Lessons,Session,Location,College
+from Lessons.serializer import LessonsSerializer
 
 User = get_user_model()
 #-----------------------------------------------------------------#
-# available courses
-class SessionSerializer(serializers.ModelSerializer):
-
-        class Meta:
-            model = Session
-            fields = '__all__'
-      
-    
-class UserSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = User
-        fields = ("phone_number", "role", "name", "email", "avatar", "is_active")
-
+# available courses -> get
 
 class PostApi(APIView):
 
-    
-
-    class OutPutSerializer(serializers.ModelSerializer):
-        teacher = UserSerializer()
-        #sessions = SessionSerializer()
-        class Meta:
-            model = Lessons
-            fields = ("title", "teacher", "sessions", "exam_date", "lesson_code", "study_group", "num_units", "is_active")
-
-    
-
+    # برای مشاهده دروس ارائه شده
     def get(self, request):
         lessons = Lessons.objects.filter(is_active=True)
-        return Response(self.OutPutSerializer(lessons, many=True).data)
+        return Response(LessonsSerializer(lessons, many=True).data)
+    
     
     
 # ----------------------------------------------------------------#  
 class ChangeStatus(APIView):
-    
-    class InPutSerializer(serializers.Serializer):
-        is_active = serializers.BooleanField()
-        title = serializers.CharField()
-    
-    def post(self,request):
-        serialize = self.InPutSerializer(data=request.data)
-        if serialize.is_valid():
-            is_active = serialize.validated_data['is_active']
-            title = serialize.validated_data['title']
-            lesson = get_object_or_404(Lessons,title__icontains=title)
-            lesson.is_active = bool(is_active)
-            lesson.save()
-            messages.success(
-                request, "The course status has been changed successfully.")
-        else:
-            messages.error(
-                request, "There was a problem adding the product to the shopping cart")
+    # برای تغییر وضعیت یک درس
+    def put(self,request,lesson_id):
         
+        lesson = get_object_or_404(Lessons,id=lesson_id)
+        lesson.is_active = not lesson.is_active
+        lesson.save()
+        messages.success(
+            request, "Lesson status changed successfully")
         return Response({"detail":"You used the status change API"})
+      
+#---------------------------------------------------------------------#
