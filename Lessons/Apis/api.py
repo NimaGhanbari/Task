@@ -46,4 +46,27 @@ class PostApi(APIView):
     def get(self, request):
         lessons = Lessons.objects.filter(is_active=True)
         return Response(self.OutPutSerializer(lessons, many=True).data)
+    
+    
 # ----------------------------------------------------------------#  
+class ChangeStatus(APIView):
+    
+    class InPutSerializer(serializers.Serializer):
+        is_active = serializers.BooleanField()
+        title = serializers.CharField()
+    
+    def post(self,request):
+        serialize = self.InPutSerializer(data=request.data)
+        if serialize.is_valid():
+            is_active = serialize.validated_data['is_active']
+            title = serialize.validated_data['title']
+            lesson = get_object_or_404(Lessons,title__icontains=title)
+            lesson.is_active = bool(is_active)
+            lesson.save()
+            messages.success(
+                request, "The course status has been changed successfully.")
+        else:
+            messages.error(
+                request, "There was a problem adding the product to the shopping cart")
+        
+        return Response({"detail":"You used the status change API"})

@@ -46,7 +46,7 @@ class Sessions_admin(NestedModelAdmin):
 @admin.register(Lessons)
 class Lessons_admin(NestedModelAdmin):
     
-    list_display = ['lesson_code','title','study_group', 'teacher','loc','num_units']
+    list_display = ['lesson_code','title','study_group', 'teacher','loc','num_units','is_active']
     
     def loc(self, obj):
         return ([x for x in obj.sessions.all()])
