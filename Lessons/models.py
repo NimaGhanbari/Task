@@ -7,7 +7,7 @@ User = get_user_model()
 
 class College(BaseModel):
     title = models.CharField(verbose_name="دانشکده", max_length=64)
-    description = models.TextField(verbose_name="توضیحات")
+    description = models.TextField(verbose_name="توضیحات",blank=True,null=True)
     is_active = models.BooleanField("فعال", default=True)
     class Meta:
         db_table = "College"
