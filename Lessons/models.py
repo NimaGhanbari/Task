@@ -61,9 +61,9 @@ class Session(BaseModel):
 class Lessons(BaseModel):
     title = models.CharField(verbose_name="عنوان", max_length=128)
     teacher = models.ForeignKey(
-        User, verbose_name="معلم", on_delete=models.CASCADE, related_name="Users")
+        User, verbose_name="معلم", on_delete=models.CASCADE, related_name="Teacher")
     #  به جای دو تا فیلد زیر باید از سشن استفاده کنیم و باید فارنکی باشد
-    sessions = models.ManyToManyField(Session,verbose_name="جلسات",related_name="sessionثs")
+    sessions = models.ManyToManyField(Session,verbose_name="جلسات",related_name="sessions")
     exam_date = models.DateTimeField(verbose_name="تاریخ امتحان")
     lesson_code = models.PositiveIntegerField()
     study_group = models.PositiveIntegerField()
